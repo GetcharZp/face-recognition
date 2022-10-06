@@ -36,6 +36,13 @@ func EnterFaceData(c *gin.Context) {
 		})
 		return
 	}
+	if face == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "未检出到人脸数据",
+		})
+		return
+	}
 	// 判断人脸数据是否存在
 	id := Rec.ClassifyThreshold(face.Descriptor, define.Tolerance)
 	if id > 0 {
