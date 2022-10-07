@@ -7,7 +7,7 @@
     </div>
     <div class="btn">
       <el-button @click="dialogVisible = true">录入人脸</el-button>
-      <el-button @click="draw">人脸识别</el-button>
+      <el-button @click="recogniseFace">人脸识别</el-button>
     </div>
   </div>
   <el-dialog
@@ -23,6 +23,18 @@
       </span>
     </template>
   </el-dialog>
+  <el-dialog
+      v-model="recognizeDialogVisible"
+      title="识别结果"
+      width="30%"
+  >
+    用户姓名: {{resp.name}}
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="recognizeDialogVisible = false">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -34,13 +46,14 @@ let canvas
 let video
 const photo=ref()
 const dialogVisible = ref(false)
+const recognizeDialogVisible = ref(false)
 const name = ref('')
+const resp = ref('')
 
 onMounted(()=>{
   video = document.getElementById('video');
   canvas = document.getElementById('canvas');
   let context = canvas.getContext('2d');
-  let img = new Image();
 
   let tracker = new tracking.ObjectTracker('face');
   tracker.setInitialScale(4);
@@ -75,6 +88,20 @@ const enterFaceData=()=> {
   }).then(res=>{
     if (res.data.code === 200) {
       ElMessage.success(res.data.msg)
+    } else {
+      ElMessage.error(res.data.msg)
+    }
+  })
+}
+const recogniseFace=()=> {
+  let ctx=photo.value.getContext('2d')
+  ctx.drawImage(video,0 ,0, 800,600)
+  api.recogniseFace({
+    file:convertBase64UrlToBlob()
+  }).then(res=>{
+    if (res.data.code === 200) {
+      recognizeDialogVisible.value = true
+      resp.value = res.data.data
     } else {
       ElMessage.error(res.data.msg)
     }

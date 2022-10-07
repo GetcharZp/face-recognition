@@ -10,8 +10,9 @@ export default{
 	enterFaceData(param){
 		return http.upFile('enter/face-data',param)
 	},
-	
-	
- 
+	// 识别人脸
+	recogniseFace(param){
+		return http.upFile('recognise/face',param)
+	}
 	 
 }
