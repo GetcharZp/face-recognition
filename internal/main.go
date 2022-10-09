@@ -14,5 +14,5 @@ func main() {
 	r.Use(middlewares.Cors())
 	r.POST("/enter/face-data", service.EnterFaceData)
 	r.POST("/recognise/face", service.RecogniseFace)
-	r.Run()
+	r.Run(":12301")
 }

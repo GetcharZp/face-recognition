@@ -12,7 +12,8 @@ import {
 // var msk=document.getElementsByClassName('axios-mask')[0]
 const service = axios.create({
  
-	baseURL: 'http://192.168.1.4:8080/',
+	// baseURL: 'http://192.168.1.4:8080/',
+	baseURL: 'https://face-recognition.getcharzp.cn/',
 	// 超时时间 单位是ms，这里设置了3s的超时时间
 	timeout: 300 * 1000
 })
